@@ -1,0 +1,60 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: auto-ssh-postgres
+  name: auto-ssh-postgres
+  namespace: auto-ssh
+spec:
+  replicas: 1
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: auto-ssh-postgres
+  template:
+    metadata:
+      labels:
+        app: auto-ssh-postgres
+    spec:
+      containers:
+      - image: nomulex/auto-ssh:latest
+        imagePullPolicy: Always
+        name: autossh-rdbms
+        env:
+        - name: SSH_HOSTUSER
+          value: autossh_k8s
+        - name: SSH_HOSTNAME
+          value: postgres-host.fqdn.com
+        - name: SSH_TUNNEL_REMOTE
+          value: "5432"
+        - name: SSH_TUNNEL_HOST
+          value: "0.0.0.0"
+        - name: SSH_LOCAL_IP
+          value: "0.0.0.0"
+        - name: SSH_TUNNEL_LOCAL
+          value: "5432"
+        - name: SSH_HOSTPORT
+          value: "22"
+        - name: SSH_MODE
+          value: -L
+        - name: SSH_KEY_FILE
+          value: /ssh/id_ed25519
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+          - name: ssh-key-path
+            mountPath: /ssh/id_ed25519
+            subPath: id_ed25519
+            readOnly: true
+      volumes:
+      - name: ssh-key-path
+        configMap:
+          name: autossh-private-key
+
+
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30

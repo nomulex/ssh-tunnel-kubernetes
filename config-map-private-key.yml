@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: autossh-private-key
+  namespace: auto-ssh
+data:
+  #Add your super private key here. Replace the example below
+  id_ed25519: |
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+    QyNTUxOQAAACAerY6uArVScgjH5C3xD7hHmfpm/l3Cnwhf7N6hO+Uh0wAAAJgQjI53EIyO
+    dwAAAAtzc2gtZWQyNTUxOQAAACAerY6uArVScgjH5C3xD7hHmfpm/l3Cnwhf7N6hO+Uh0w
+    AAAEAQmQmz1DybakU+NVW8IGF05AjWMx0BXl1Pp4enZmQqRR6tjq4CtVJyCMfkLfEPuEeZ
+    +mb+XcKfCF/s3qE75SHTAAAAEGF1dG9zc2hAZnFkbi5jb20BAgMEBQ==
+    -----END OPENSSH PRIVATE KEY-----
